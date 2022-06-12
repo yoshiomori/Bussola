@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangoApp',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,5 @@ CACHES = {
 }
 
 CELERY_CACHE_BACKEND = 'default'
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']

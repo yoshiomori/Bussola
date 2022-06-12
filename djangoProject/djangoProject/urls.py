@@ -15,7 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views import generic
+
+from djangoApp.views import load_view_list
+
+
+def get_url(view_class):
+    if issubclass(view_class, (generic.DetailView, generic.UpdateView, generic.DeleteView)):
+        tail = '/<int:pk>/'
+    else:
+        tail = '/'
+    return view_class.__name__ + tail
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+] + [path(get_url(view_class), view_class.as_view(), name=view_class.__name__) for view_class in load_view_list()]

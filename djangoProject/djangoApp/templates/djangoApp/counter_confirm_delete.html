@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Delete</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <p>Confirma a remoção?</p>
+    <button type="submit">Sim</button>
+    <a href="{{ object.get_list_url }}">back to list</a>
+</form>
+</body>
+</html>

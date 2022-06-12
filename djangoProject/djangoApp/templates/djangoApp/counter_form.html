@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">{% if object %}Atualizar{% else %}Criar{% endif %}</button>
+</form>
+<a href="{{ object.get_delete_url }}">delete</a>
+<a href="{{ object.get_absolute_url }}">detail</a>
+<a href="{{ object.get_list_url }}">back to list</a>
+</body>
+</html>
