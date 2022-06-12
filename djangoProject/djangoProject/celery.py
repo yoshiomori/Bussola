@@ -21,7 +21,7 @@ app.conf.broker_url = 'redis://redis:6379/0'
 
 app.conf.beat_schedule = {
     # Executes every minute.
-    'add-every-monday-morning': {
+    'add-every-minute': {
         'task': 'djangoApp.tasks.update_counter',
         'schedule': crontab(minute='*/1'),
     },
