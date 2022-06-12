@@ -1,0 +1,76 @@
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 80:80
+    depends_on:
+      - django
+  django:
+    build:
+      django
+    command: bash -c "pip install -r requirements.txt && python manage.py migrate && gunicorn -b 0.0.0.0 djangoProject.wsgi"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - DJANGO_CACHE_LOCATION=${DJANGO_CACHE_LOCATION}
+    volumes:
+      - ../djangoProject:/app
+    working_dir: /app
+    depends_on:
+      - postgres
+      - redis
+  celery_worker:
+    build:
+      celery
+    command: bash -c "pip install -r requirements.txt && celery -A djangoProject worker"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - DJANGO_CACHE_LOCATION=${DJANGO_CACHE_LOCATION}
+    volumes:
+      - ../djangoProject:/app
+    working_dir: /app
+    depends_on:
+      - redis
+      - django
+      - celery_beat
+  celery_beat:
+    build:
+      celery
+    command: bash -c "pip install -r requirements.txt && celery -A djangoProject beat"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - DJANGO_CACHE_LOCATION=${DJANGO_CACHE_LOCATION}
+    volumes:
+      - ../djangoProject:/app
+    working_dir: /app
+    depends_on:
+      - redis
+      - django
+  postgres:
+    image:
+      postgres:latest
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+  redis:
+    image:
+      redis:latest
