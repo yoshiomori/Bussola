@@ -22,7 +22,7 @@ from djangoApp.views import load_view_list
 
 def get_url(view_class):
     if issubclass(view_class, (generic.DetailView, generic.UpdateView, generic.DeleteView)):
-        tail = '/<int:pk>/'
+        tail = '/<pk>/'
     else:
         tail = '/'
     return view_class.__name__ + tail

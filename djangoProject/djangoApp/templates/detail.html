@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Detail{% endblock %}</title>
+</head>
+<body>
+{% block body %}
+{{ object }}
+<a href="{{ object.get_list_url }}">back to list</a>
+<a href="{{ object.get_update_url }}">update</a>
+<a href="{{ object.get_delete_url }}">delete</a>
+{% endblock %}
+</body>
+</html>

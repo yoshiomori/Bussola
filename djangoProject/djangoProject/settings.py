@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import base64
 import os
 from pathlib import Path
 
@@ -136,3 +137,6 @@ CACHES = {
 CELERY_CACHE_BACKEND = 'default'
 
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
+
+AZURE_TOKEN = base64.b64encode(f":{os.environ['AZURE_PERSONAL_TOKEN']}".encode('ascii')).decode('ascii')
+AZURE_ORG_URL = os.environ['AZURE_ORG_URL']

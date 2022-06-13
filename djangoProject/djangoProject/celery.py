@@ -25,4 +25,8 @@ app.conf.beat_schedule = {
         'task': 'djangoApp.tasks.update_counter',
         'schedule': crontab(minute='*/1'),
     },
+    'sync_projects-minute': {
+        'task': 'djangoApp.tasks.sync_projects',
+        'schedule': crontab(minute='*/1'),
+    }
 }

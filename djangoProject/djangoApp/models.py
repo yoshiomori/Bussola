@@ -18,3 +18,16 @@ class UrlModelMixin(object):
 
 class Counter(UrlModelMixin, models.Model):
     value = models.PositiveIntegerField()
+
+
+class Project(UrlModelMixin, models.Model):
+    id = models.CharField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255)
+    url = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    revision = models.PositiveIntegerField()
+    visibility = models.CharField(max_length=255)
+    lastUpdateTime = models.DateTimeField()
+
+    def __str__(self):
+        return self.name
